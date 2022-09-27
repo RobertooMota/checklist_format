@@ -1,9 +1,13 @@
 from openpyxl import load_workbook
 
 colunaPN = 2
-colunaDescricao = 1
-colunaTipo = 3
-colunaQuant = 4
+colunaDescricao = 3
+colunaTipo = 4
+colunaUnidade = 6
+colunaQuant = 6
+
+itensDelete = ["90-000", "90-110", "4-260", "9-200", "4-220", "9-121", "9-135", "9-255", "9-536", "9-997", "10-251",
+               "90-260"]
 
 
 def formatChecklist():
@@ -29,30 +33,25 @@ def SelectDeletRows(pagina):
 
     for linhas in pagina:
         count += 1
-
-        if "90-000" in linhas[colunaPN].value:
-            print(f"Valor da linha {count}: {linhas[0].value} --> Conjunto final!")
-            deletarLinhas.append(count)
-        elif "90-110" in linhas[colunaPN].value:
-            print(f"Valor da linha {count}: {linhas[0].value} --> Conjunto soldado!")
-            deletarLinhas.append(count)
-        elif "4-260" in linhas[colunaPN].value:
-            print(f"Valor da linha {count}: {linhas[0].value} --> Consignados!")
-            deletarLinhas.append(count)
-        elif "9-200" in linhas[colunaPN].value:
-            print(f"Valor da linha {count}: {linhas[0].value} --> Usinados!")
-            deletarLinhas.append(count)
-        else:
-            print(f"Valor da linha {count}: {linhas[colunaPN].value}")
+        for itemDelete in itensDelete:
+            if itemDelete in linhas[colunaPN].value:
+                if itemDelete in "90-000":
+                    print(f"Valor da linha {count}: {linhas[colunaPN].value} --> Conjunto Montado Final")
+                elif itemDelete in "90-110":
+                    print("Conjunto Soldado")
+                deletarLinhas.append(count)
+            else:
+                print(f"Valor da linha {count}: {linhas[colunaPN].value}")
     print(f"Lista de linhas para serem excluidas: {deletarLinhas}")
     paginaTratada = deletRow(pagina, deletarLinhas)
-    return paginaTratada
+    paginaFinal = organizarProduzidos(paginaTratada)
+    return paginaFinal
 
 
 def deletColuns(pagina):
     try:
         for index in range(8, 16):
-            pagina.delete_cols(5)
+            pagina.delete_cols(8)
         return pagina
     except:
         return False
@@ -72,5 +71,24 @@ def deletRow(pagina, linha):
     return pagina
 
 
+def organizarProduzidos(pagina):
+    count = 0
+    deletarLinhas = list()
+    for linhas in pagina:
+        count += 1
+        if "90-200" in linhas[colunaPN].value:
+            pagina.cell(row=count, column=colunaUnidade).value = pagina.cell(row=count + 1,
+                                                                             column=colunaDescricao).value
+            deletarLinhas.append(count + 1)
+    count = 0
+
+    for numeroLinha in deletarLinhas:
+        for linhas in pagina:
+            count += 1
+            if "90-200" not in linhas[colunaPN].value:
+                print(f'Valor deletado: {linhas[colunaPN].value}')
+
+
+'
 if __name__ == "__main__":
     formatChecklist()
