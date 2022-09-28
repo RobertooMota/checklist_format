@@ -11,7 +11,8 @@ itensDelete = ["90-000", "90-110", "4-260", "9-200", "4-220", "9-121", "9-135", 
 
 
 def formatChecklist():
-    caminhoOriginal = "C:/Users/Roberto/Desktop/CHEKCLIST.xlsx"
+    # caminhoOriginal = "C:/Users/Roberto/Desktop/CHEKCLIST.xlsx"
+    caminhoOriginal = str(input("Arraste o arquivo e de um enter: "))
     planilha = load_workbook(caminhoOriginal)
     folha = planilha['Planilha1']
 
@@ -35,13 +36,13 @@ def SelectDeletRows(pagina):
         count += 1
         for itemDelete in itensDelete:
             if itemDelete in linhas[colunaPN].value:
-                if itemDelete in "90-000":
-                    print(f"Valor da linha {count}: {linhas[colunaPN].value} --> Conjunto Montado Final")
-                elif itemDelete in "90-110":
-                    print("Conjunto Soldado")
+                # if itemDelete in "90-000":
+                #      print(f"Valor da linha {count}: {linhas[colunaPN].value} --> Conjunto Montado Final")
+                # elif itemDelete in "90-110":
+                #      print("Conjunto Soldado")
                 deletarLinhas.append(count)
-            else:
-                print(f"Valor da linha {count}: {linhas[colunaPN].value}")
+            # else:
+            #     print(f"Valor da linha {count}: {linhas[colunaPN].value}")
     print(f"Lista de linhas para serem excluidas: {deletarLinhas}")
     paginaTratada = deletRow(pagina, deletarLinhas)
     paginaFinal = organizarProduzidos(paginaTratada)
@@ -58,37 +59,38 @@ def deletColuns(pagina):
 
 
 def deletRow(pagina, linha):
-    print(f'Linhas recebidas para exclusao: {linha}')
+    # print(f'Linhas recebidas para exclusao: {linha}')
     contador = 0
     for index in linha:
-        print(f'{index}  {type(index)}')
+        # print(f'{index}  {type(index)}')
         pagina.delete_rows(index - contador)
         contador += 1
 
-    for item in pagina:
-        print(item[colunaPN].value)
+    # for item in pagina:
+    #     print(item[colunaPN].value)
 
     return pagina
 
 
 def organizarProduzidos(pagina):
     count = 0
-    deletarLinhas = list()
+    deletar = list()
     for linhas in pagina:
+        # print(linhas[colunaPN].value)
         count += 1
-        if "90-200" in linhas[colunaPN].value:
+        if "90-200" in linhas[colunaPN].value or "90-220" in linhas[colunaPN].value:
             pagina.cell(row=count, column=colunaUnidade).value = pagina.cell(row=count + 1,
                                                                              column=colunaDescricao).value
-            deletarLinhas.append(count + 1)
-    count = 0
-
-    for numeroLinha in deletarLinhas:
-        for linhas in pagina:
-            count += 1
-            if "90-200" not in linhas[colunaPN].value:
-                print(f'Valor deletado: {linhas[colunaPN].value}')
+            deletar.append(count + 1)
+    deleteMP(pagina, deletar)
 
 
-'
+def deleteMP(pagina, deletar):
+    contador = 0
+    for index in deletar:
+        pagina.delete_rows(index - contador)
+        contador += 1
+
+
 if __name__ == "__main__":
     formatChecklist()
