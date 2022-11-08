@@ -7,8 +7,8 @@ colunaTipo = 4
 colunaUnidade = 6
 colunaQuant = 6
 
-itensDelete = ["90-000", "90-110", "4-260", "9-200", "4-220", "9-121", "9-135", "9-255", "9-536", "9-997", "10-251",
-               "90-260"]
+itensDelete = ["90-000", "90-110", "4-260", "9-200", "4-220", "9-121",
+               "9-135", "9-255", "9-536", "9-997", "10-251", "90-260"]
 
 
 def formatChecklist(caminhoOriginal):
@@ -80,7 +80,7 @@ def organizarProduzidos(pagina):
         count += 1
         if "90-200" in linhas[colunaPN].value or "90-220" in linhas[colunaPN].value:
             pagina.cell(row=count, column=colunaUnidade).value = pagina.cell(row=count + 1,
-                                                                             column=colunaDescricao+1).value
+                                                                             column=colunaDescricao + 1).value
             deletar.append(count + 1)
     deleteMP(pagina, deletar)
 
