@@ -1,4 +1,4 @@
-from openpyxl import load_workbook
+from openpyxl import load_workbook, Workbook
 
 path = "C:/Users/Roberto/Desktop/exemplo.xlsx"
 
@@ -15,7 +15,7 @@ def format(caminhoOriginal, filtro):
 
     lista = selectRows(folha, filtro)
     dados = selectData(folha, lista)
-
+    status = novaPlanilha(dados, 'C:/Users/Roberto/Desktop/exemplo_nova.xlsx')
     planilha.close()
 
 
@@ -47,15 +47,32 @@ def selectData(folha, lista) -> list:
 
                 Colunas.append(folha.cell(row=index, column=item + 1).value)
                 Colunas.append(folha.cell(row=index, column=descricao + 1).value)
+                Colunas.append(folha.cell(row=index + 1, column=descricao + 1).value)
                 Colunas.append(folha.cell(row=index, column=quantidade + 1).value)
                 Colunas.append(folha.cell(row=index, column=tipo + 1).value)
                 Matriz.append(Colunas.copy())
                 Colunas.clear()
+    #
+    # for i in Matriz:
+    #     print(i)
 
-    for i in Matriz:
-        print(i)
+    return Matriz
 
-    return Colunas
+
+def novaPlanilha(dados, path):
+    wb = Workbook()
+    wb.remove(wb['Sheet'])
+    ws = wb.create_sheet('Planilha1', 0)
+    ws.column_dimensions['A'].width = 16
+    ws.column_dimensions['B'].width = 19
+    ws.column_dimensions['C'].width = 23
+    ws.column_dimensions['D'].width = 10
+    ws.column_dimensions['E'].width = 10
+    cabecalho = ['ITEM', 'DESCRICAO', 'MATERIA PRIMA', 'QUANTIDADE', 'TIPO', ]
+    ws.append(cabecalho)
+    for row in dados:
+        ws.append(row)
+    wb.save(path)
 
 
 if __name__ == "__main__":
