@@ -2,6 +2,7 @@ from openpyxl import load_workbook, Workbook
 
 path = "C:/Users/Roberto/Desktop/exemplo.xlsx"
 
+
 tipo = 4
 item = 2
 quantidade = 6
