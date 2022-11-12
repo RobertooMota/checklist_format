@@ -1,7 +1,6 @@
 import sys
 from PySide6.QtWidgets import QFileDialog, QMessageBox
 from main_script import format
-
 from ui_main import *
 
 titulo = "CheckList - Automático v0.1"
@@ -24,8 +23,10 @@ class MainWindow(QMainWindow):
         self.arquivo = QFileDialog.getOpenFileNames(self, "Abrir arquivo", "", "Planilha do Excel (*.xlsx)")
 
     def CriarCL(self):
-        format(self.arquivo[0][0], '90-200')
-
+        if(format(self.arquivo[0][0], '90-200')):
+            Msg = QMessageBox()
+        else:
+            ...
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

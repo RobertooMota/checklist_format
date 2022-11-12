@@ -19,6 +19,7 @@ def format(caminhoOriginal, filtro):
     dados = selectData(folha, lista)
     status = novaPlanilha(dados, caminho)
     planilha.close()
+    return status
 
 
 def novoCaminho(caminhoOriginal, folha):
@@ -66,19 +67,23 @@ def selectData(folha, lista) -> list:
 
 
 def novaPlanilha(dados, path):
-    wb = Workbook()
-    wb.remove(wb['Sheet'])
-    ws = wb.create_sheet('Planilha1', 0)
-    ws.column_dimensions['A'].width = 16
-    ws.column_dimensions['B'].width = 19
-    ws.column_dimensions['C'].width = 23
-    ws.column_dimensions['D'].width = 10
-    ws.column_dimensions['E'].width = 10
-    cabecalho = ['ITEM', 'DESCRICAO', 'MATERIA PRIMA', 'QUANTIDADE', 'TIPO', ]
-    ws.append(cabecalho)
-    for row in dados:
-        ws.append(row)
-    wb.save(path)
+    try:
+        wb = Workbook()
+        wb.remove(wb['Sheet'])
+        ws = wb.create_sheet('Planilha1', 0)
+        ws.column_dimensions['A'].width = 16
+        ws.column_dimensions['B'].width = 19
+        ws.column_dimensions['C'].width = 23
+        ws.column_dimensions['D'].width = 10
+        ws.column_dimensions['E'].width = 10
+        cabecalho = ['ITEM', 'DESCRICAO', 'MATERIA PRIMA', 'QUANTIDADE', 'TIPO', ]
+        ws.append(cabecalho)
+        for row in dados:
+            ws.append(row)
+        wb.save(path)
+        return True
+    except:
+        return False
 
 
 if __name__ == "__main__":
