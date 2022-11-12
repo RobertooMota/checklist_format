@@ -2,7 +2,6 @@ from openpyxl import load_workbook, Workbook
 
 path = "C:/Users/Roberto/Desktop/exemplo.xlsx"
 
-
 tipo = 4
 item = 2
 quantidade = 6
@@ -14,10 +13,16 @@ def format(caminhoOriginal, filtro):
     sheets = planilha.sheetnames[0]
     folha = planilha[sheets]
 
+    caminho = novoCaminho(caminhoOriginal, folha)
+
     lista = selectRows(folha, filtro)
     dados = selectData(folha, lista)
-    status = novaPlanilha(dados, 'C:/Users/Roberto/Desktop/exemplo_nova.xlsx')
+    status = novaPlanilha(dados, caminho)
     planilha.close()
+
+
+def novoCaminho(caminhoOriginal, folha):
+    return caminhoOriginal[0:25] + folha['C2'].value + '.xlsx'
 
 
 def selectRows(folha, filtro) -> list:
@@ -32,10 +37,10 @@ def selectRows(folha, filtro) -> list:
 
 
 def selectData(folha, lista) -> list:
-    _item = 'C'
-    _descricao = 'D'
-    _tipo = 'E'
-    _quantidade = 'G'
+    # _item = 'C'
+    # _descricao = 'D'
+    # _tipo = 'E'
+    # _quantidade = 'G'
     contador = 0
     Colunas = []
     Matriz = []
@@ -74,7 +79,6 @@ def novaPlanilha(dados, path):
     for row in dados:
         ws.append(row)
     wb.save(path)
-
 
 
 if __name__ == "__main__":
