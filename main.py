@@ -23,10 +23,19 @@ class MainWindow(QMainWindow):
         self.arquivo = QFileDialog.getOpenFileNames(self, "Abrir arquivo", "", "Planilha do Excel (*.xlsx)")
 
     def CriarCL(self):
-        if(format(self.arquivo[0][0], '90-200')):
+        if format(self.arquivo[0][0], '90-200'):
             Msg = QMessageBox()
+            Msg.setIcon(QMessageBox.Information)
+            Msg.setWindowTitle('Alerta')
+            Msg.setText("Concluido com sucesso!")
+            Msg.exec()
         else:
-            ...
+            Msg = QMessageBox()
+            Msg.setIcon(QMessageBox.Critical)
+            Msg.setWindowTitle('Alerta')
+            Msg.setText("ERRO!")
+            Msg.exec()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

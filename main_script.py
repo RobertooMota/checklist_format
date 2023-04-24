@@ -14,7 +14,7 @@ def format(caminhoOriginal, filtro):
     folha = planilha[sheets]
 
     caminho = novoCaminho(caminhoOriginal, folha)
-
+    print(caminho)
     lista = selectRows(folha, filtro)
     dados = selectData(folha, lista)
     status = novaPlanilha(dados, caminho)
@@ -23,7 +23,7 @@ def format(caminhoOriginal, filtro):
 
 
 def novoCaminho(caminhoOriginal, folha):
-    return caminhoOriginal[0:25] + folha['C2'].value + '.xlsx'
+    return caminhoOriginal[0:-(len(caminhoOriginal) - caminhoOriginal.rfind("/") - 1)] + folha['C2'].value + '.xlsx'
 
 
 def selectRows(folha, filtro) -> list:
